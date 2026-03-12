@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Do Love, Life & Trust Prevail?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+  :root {
+    --bg:#0d0f1a;--card:#13162a;--border:#1e2340;
+    --gold:#c9a84c;--purple:#7c6fd4;--rose:#c4607a;
+    --green:#4caf82;--text:#e2e4f0;--muted:#7a7f9a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;line-height:1.8;}
+
+  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--gold));width:0%;z-index:1000;transition:width .1s linear;}
+
+  nav{position:fixed;top:3px;width:100%;z-index:999;padding:16px 40px;background:rgba(13,15,26,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold);letter-spacing:.05em;}
+  .nav-links{display:flex;gap:28px;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;transition:color .3s;}
+  .nav-links a:hover{color:var(--gold);}
+
+  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(124,111,212,.15) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 20% 80%,rgba(196,96,122,.1) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 80% 20%,rgba(201,168,76,.08) 0%,transparent 60%);animation:pulse 8s ease-in-out infinite alternate;}
+  @keyframes pulse{0%{opacity:.6;transform:scale(1)}100%{opacity:1;transform:scale(1.05)}}
+  .hero-tag{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);margin-bottom:20px;border:1px solid rgba(124,111,212,.3);padding:6px 16px;border-radius:20px;display:inline-block;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,6vw,4.5rem);line-height:1.15;max-width:800px;background:linear-gradient(135deg,#fff 30%,var(--gold) 70%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px;}
+  .hero-sub{color:var(--muted);font-size:.9rem;margin-bottom:40px;}
+  .scroll-hint{position:absolute;bottom:36px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;animation:bounce 2s infinite;}
+  .scroll-hint span{width:1px;height:48px;background:linear-gradient(to bottom,var(--purple),transparent);}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+  .author-section{padding:80px 24px;display:flex;justify-content:center;}
+  .author-card{max-width:760px;width:100%;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:12px;padding:48px;position:relative;}
+  .author-card::before{content:'\201C';font-family:'Playfair Display',serif;font-size:8rem;line-height:1;color:rgba(201,168,76,.12);position:absolute;top:10px;left:24px;}
+  .author-card p{font-family:'Playfair Display',serif;font-style:italic;font-size:1.15rem;color:#c8cce0;line-height:1.9;position:relative;z-index:1;}
+  .author-sig{margin-top:24px;display:flex;align-items:center;gap:12px;}
+  .author-dot{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1rem;color:#fff;}
+  .author-name{color:var(--gold);font-size:.85rem;letter-spacing:.05em;}
+  .author-handle{color:var(--muted);font-size:.75rem;}
+
+  .section{padding:60px 24px;display:flex;justify-content:center;}
+  .section-inner{max-width:900px;width:100%;}
+  .section-label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+  .section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:32px;}
+
+  .themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:40px;}
+  .theme-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:36px 28px;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden;}
+  .theme-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.4);}
+  .card-icon{font-size:2rem;margin-bottom:16px;width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;}
+  .icon-love{background:rgba(196,96,122,.15);}
+  .icon-life{background:rgba(124,111,212,.15);}
+  .icon-trust{background:rgba(201,168,76,.15);}
+  .card-title{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:12px;}
+  .title-love{color:var(--rose);}
+  .title-life{color:var(--purple);}
+  .title-trust{color:var(--gold);}
+  .card-body{color:var(--muted);font-size:.88rem;line-height:1.8;margin-bottom:20px;}
+  .reflection-prompt{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-size:.8rem;color:#8888aa;font-style:italic;}
+  .reflection-prompt strong{color:var(--text);font-style:normal;display:block;margin-bottom:4px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;}
+
+  .divider{max-width:900px;margin:0 auto;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+
+  /* ── Journal ── */
+  .journal-section{padding:80px 24px;display:flex;justify-content:center;}
+  .journal-card{max-width:780px;width:100%;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:48px;}
+  .journal-card h2{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:8px;}
+  .journal-card>p{color:var(--muted);font-size:.88rem;margin-bottom:28px;}
+  .name-row{display:flex;gap:12px;margin-bottom:24px;}
+  .name-input{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-family:'Inter',sans-serif;font-size:.88rem;outline:none;transition:border-color .3s;}
+  .name-input:focus{border-color:var(--purple);}
+  .name-input::placeholder{color:#44475a;}
+  .jp-prompts{display:flex;flex-direction:column;gap:24px;}
+  .jp-item{display:flex;flex-direction:column;gap:8px;}
+  .jp-label{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;}
+  .lbl-love{color:var(--rose);}
+  .lbl-life{color:var(--purple);}
+  .lbl-trust{color:var(--gold);}
+  .jp-input{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:'Inter',sans-serif;font-size:.88rem;resize:vertical;min-height:90px;width:100%;transition:border-color .3s;outline:none;}
+  .jp-input:focus{border-color:var(--purple);}
+  .jp-input::placeholder{color:#44475a;}
+  .submit-btn{margin-top:28px;background:linear-gradient(135deg,var(--purple),var(--rose));border:none;border-radius:10px;padding:14px 32px;color:#fff;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:500;letter-spacing:.05em;cursor:pointer;transition:opacity .3s,transform .2s;display:flex;align-items:center;gap:8px;}
+  .submit-btn:hover:not(:disabled){opacity:.85;transform:scale(1.02);}
+  .submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  /* ── Result card ── */
+  .result-card{margin-top:32px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:32px;display:none;}
+  .result-card.show{display:block;animation:fadeUp .6s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .result-title{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:20px;color:var(--gold);}
+  .scores-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+  .score-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 16px;text-align:center;}
+  .score-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;}
+  .score-num{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;line-height:1;}
+  .score-bar-wrap{height:5px;background:rgba(255,255,255,.06);border-radius:4px;margin-top:10px;overflow:hidden;}
+  .score-bar{height:100%;border-radius:4px;width:0%;transition:width 1s ease;}
+  .bar-love{background:linear-gradient(90deg,var(--rose),#e8a0b0);}
+  .bar-life{background:linear-gradient(90deg,var(--purple),#a89de0);}
+  .bar-trust{background:linear-gradient(90deg,var(--gold),#e8d08a);}
+  .score-type{font-size:.72rem;color:var(--muted);margin-top:6px;}
+  .remarks-block{background:rgba(124,111,212,.08);border:1px solid rgba(124,111,212,.2);border-radius:10px;padding:20px;font-size:.88rem;color:#c0c3d8;line-height:1.9;}
+  .remarks-block strong{color:var(--text);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
+
+  /* ── Public feed ── */
+  .feed-section{padding:60px 24px 80px;display:flex;justify-content:center;}
+  .feed-inner{max-width:900px;width:100%;}
+  .feed-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;}
+  .feed-header h2{font-family:'Playfair Display',serif;font-size:1.8rem;}
+  .live-badge{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--green);border:1px solid rgba(76,175,130,.3);padding:5px 12px;border-radius:20px;}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+  .feed-grid{display:flex;flex-direction:column;gap:16px;}
+  .feed-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;animation:fadeUp .5s ease;}
+  .feed-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+  .feed-name{font-weight:500;font-size:.9rem;}
+  .feed-time{color:var(--muted);font-size:.75rem;}
+  .feed-scores{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .fs-pill{padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:500;}
+  .fs-love{background:rgba(196,96,122,.15);color:var(--rose);}
+  .fs-life{background:rgba(124,111,212,.15);color:var(--purple);}
+  .fs-trust{background:rgba(201,168,76,.15);color:var(--gold);}
+  .feed-remark{color:var(--muted);font-size:.82rem;line-height:1.7;font-style:italic;}
+  .feed-empty{text-align:center;color:var(--muted);padding:48px;font-size:.9rem;}
+  .loading-dots{display:inline-flex;gap:4px;}
+  .loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--purple);animation:ldot .9s infinite;}
+  .loading-dots span:nth-child(2){animation-delay:.2s;}
+  .loading-dots span:nth-child(3){animation-delay:.4s;}
+  @keyframes ldot{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+
+  footer{padding:40px 24px;text-align:center;color:var(--muted);font-size:.78rem;border-top:1px solid var(--border);}
+  footer a{color:var(--gold);text-decoration:none;}
+  .fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:600px){
+    nav{padding:14px 20px;}
+    .journal-card{padding:28px 20px;}
+    .scores-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav>
+  <div class="nav-logo">Trust · Love · Live · Life</div>
+  <div class="nav-links">
+    <a href="#themes">Themes</a>
+    <a href="#journal">Reflect</a>
+    <a href="#feed">Community</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-tag">A Philosophical Exploration</div>
+  <h1>Do Love, Life & Trust Prevail in Our Lives?</h1>
+  <p class="hero-sub">By Pawan Kumar &nbsp;·&nbsp; December 13, 2024</p>
+  <div class="scroll-hint">Scroll to explore <span></span></div>
+</section>
+
+<!-- Author quote -->
+<section class="author-section fade-in">
+  <div class="author-card">
+    <p>I am not what I do, but what I am: a thought prevailing in my brain, a story lying inside my heart, and an emotion flowing in my veins. I am not what you see or what you do not feel, but I am what you want me to be. Yes, I am Pawan, as pure as air.</p>
+    <div class="author-sig">
+      <div class="author-dot">P</div>
+      <div>
+        <div class="author-name">Pawan Kumar</div>
+        <div class="author-handle">trustlovelivelife.wordpress.com</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Three themes -->
+<section class="section fade-in" id="themes">
+  <div class="section-inner">
+    <div class="section-label">Core Themes</div>
+    <div class="section-title">Three Pillars of Human Experience</div>
+    <p style="color:var(--muted);max-width:600px;font-size:.9rem;">Love, Life, and Trust are not merely words — they are the invisible architecture of everything we are and everything we strive to become.</p>
+    <div class="themes">
+      <div class="theme-card fade-in">
+        <div class="card-icon icon-love">❤️</div>
+        <div class="card-title title-love">Love</div>
+        <p class="card-body">Love is not a destination — it is the very act of moving. It shapes our identity, softens our fears, and teaches us that vulnerability is not weakness, but the most profound form of courage.</p>
+        <div class="reflection-prompt"><strong>🌱 Reflect</strong>How has love — in any form — changed the way you see yourself or the world?</div>
+      </div>
+      <div class="theme-card fade-in">
+        <div class="card-icon icon-life">🌿</div>
+        <div class="card-title title-life">Life</div>
+        <p class="card-body">Life is neither a problem to be solved nor a race to be won. It is a story being written moment by moment — in the silences between words and the spaces between heartbeats.</p>
+        <div class="reflection-prompt"><strong>🌱 Reflect</strong>What moment in your life made you feel most alive — and why?</div>
+      </div>
+      <div class="theme-card fade-in">
+        <div class="card-icon icon-trust">✨</div>
+        <div class="card-title title-trust">Trust</div>
+        <p class="card-body">Trust is the invisible bridge we build between ourselves and others — and between who we are today and who we hope to become. Without it, even love and life lose their footing.</p>
+        <div class="reflection-prompt"><strong>🌱 Reflect</strong>Who or what have you chosen to trust, and what did that courage teach you?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Journal / Scoring -->
+<section class="journal-section fade-in" id="journal">
+  <div class="journal-card">
+    <h2>Share Your Reflection</h2>
+    <p>Write from the heart. Our AI will read your words and reveal your Love, Life & Trust scores (1–9), just like MBTI dimensions, with a personal remark — and share it with the community.</p>
+
+    <div class="name-row">
+      <input class="name-input" id="nameInput" placeholder="Your name (e.g. Aarav, Anonymous…)" maxlength="40">
+    </div>
+
+    <div class="jp-prompts">
+      <div class="jp-item">
+        <label class="jp-label lbl-love">❤️ On Love</label>
+        <textarea class="jp-input" id="loveInput" placeholder="What does love mean to you today — not in theory, but in your lived experience?"></textarea>
+      </div>
+      <div class="jp-item">
+        <label class="jp-label lbl-life">💜 On Life</label>
+        <textarea class="jp-input" id="lifeInput" placeholder="If your life were a story, what chapter are you in right now?"></textarea>
+      </div>
+      <div class="jp-item">
+        <label class="jp-label lbl-trust">✨ On Trust</label>
+        <textarea class="jp-input" id="trustInput" placeholder="Is there something — or someone — you need to trust more, including yourself?"></textarea>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitReflection()">
+      <span id="btnText">✨ Reveal My Scores</span>
+    </button>
+
+    <!-- Result -->
+    <div class="result-card" id="resultCard">
+      <div class="result-title" id="resultGreeting"></div>
+      <div class="scores-row">
+        <div class="score-box">
+          <div class="score-label lbl-love">❤️ Love</div>
+          <div class="score-num" id="loveScore" style="color:var(--rose)">—</div>
+          <div class="score-bar-wrap"><div class="score-bar bar-love" id="loveBar"></div></div>
+          <div class="score-type" id="loveType"></div>
+        </div>
+        <div class="score-box">
+          <div class="score-label lbl-life">💜 Life</div>
+          <div class="score-num" id="lifeScore" style="color:var(--purple)">—</div>
+          <div class="score-bar-wrap"><div class="score-bar bar-life" id="lifeBar"></div></div>
+          <div class="score-type" id="lifeType"></div>
+        </div>
+        <div class="score-box">
+          <div class="score-label lbl-trust">✨ Trust</div>
+          <div class="score-num" id="trustScore" style="color:var(--gold)">—</div>
+          <div class="score-bar-wrap"><div class="score-bar bar-trust" id="trustBar"></div></div>
+          <div class="score-type" id="trustType"></div>
+        </div>
+      </div>
+      <div class="remarks-block">
+        <strong>🌟 Your Personal Remark</strong>
+        <span id="remarkText"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Public Feed -->
+<section class="feed-section fade-in" id="feed">
+  <div class="feed-inner">
+    <div class="feed-header">
+      <h2>Community Reflections</h2>
+      <div class="live-badge"><div class="live-dot"></div> Live Feed</div>
+    </div>
+    <div class="feed-grid" id="feedGrid">
+      <div class="feed-empty">Be the first to share your reflection ✨</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:8px;font-family:'Playfair Display',serif;font-size:1rem;color:var(--text);">Trust · Love · Live · Life</p>
+  <p>Written by <a href="https://trustlovelivelife.wordpress.com" target="_blank">Pawan Kumar</a> · December 13, 2024</p>
+</footer>
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const d = document.documentElement;
+  document.getElementById('progress').style.width = (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+});
+
+// Fade-in observer
+const obs = new IntersectionObserver(els => els.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// ── Storage helpers ──
+const FEED_KEY = 'tltl_feed_v1';
+
+async function loadFeed() {
+  try {
+    const r = await window.storage.get(FEED_KEY, true);
+    return r ? JSON.parse(r.value) : [];
+  } catch { return []; }
+}
+
+async function saveFeed(entries) {
+  try { await window.storage.set(FEED_KEY, JSON.stringify(entries), true); } catch {}
+}
+
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  const m = Math.floor(diff/60000), h = Math.floor(m/60), d = Math.floor(h/24);
+  if (d>0) return d+'d ago';
+  if (h>0) return h+'h ago';
+  if (m>0) return m+'m ago';
+  return 'just now';
+}
+
+function renderFeed(entries) {
+  const g = document.getElementById('feedGrid');
+  if (!entries.length) { g.innerHTML = '<div class="feed-empty">Be the first to share your reflection ✨</div>'; return; }
+  g.innerHTML = [...entries].reverse().map(e => `
+    <div class="feed-card">
+      <div class="feed-top">
+        <span class="feed-name">${e.name}</span>
+        <span class="feed-time">${timeAgo(e.ts)}</span>
+      </div>
+      <div class="feed-scores">
+        <span class="fs-pill fs-love">❤️ Love ${e.scores.love}/9 · ${e.scores.loveType}</span>
+        <span class="fs-pill fs-life">💜 Life ${e.scores.life}/9 · ${e.scores.lifeType}</span>
+        <span class="fs-pill fs-trust">✨ Trust ${e.scores.trust}/9 · ${e.scores.trustType}</span>
+      </div>
+      <div class="feed-remark">"${e.remark}"</div>
+    </div>`).join('');
+}
+
+// Load feed on start
+loadFeed().then(renderFeed);
+
+// ── Submit ──
+async function submitReflection() {
+  const name = document.getElementById('nameInput').value.trim() || 'Anonymous';
+  const love = document.getElementById('loveInput').value.trim();
+  const life = document.getElementById('lifeInput').value.trim();
+  const trust = document.getElementById('trustInput').value.trim();
+
+  if (!love && !life && !trust) { alert('Please write at least one reflection before submitting.'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  btn.disabled = true;
+  btnText.innerHTML = '<span class="loading-dots"><span></span><span></span><span></span></span> Analysing…';
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+'x-api-key': 'sk-ant-api03-8Pm...wAAA',
+'anthropic-version': '2023-06-01',
+'anthropic-dangerous-direct-browser-access': 'true',
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: `You are an empathetic reflection analyser for a philosophical blog about Love, Life, and Trust. 
+A reader has shared their personal reflections. Analyse them and return a JSON object ONLY — no extra text, no markdown fences.
+
+Reflections:
+- On Love: "${love || '(not answered)'}"
+- On Life: "${life || '(not answered)'}"
+- On Trust: "${trust || '(not answered)'}"
+
+Return this exact JSON structure:
+{
+  "scores": {
+    "love": <integer 1-9>,
+    "loveType": <2-word archetype label like "Deep Nurturer" or "Gentle Seeker">,
+    "life": <integer 1-9>,
+    "lifeType": <2-word archetype label like "Bold Explorer" or "Quiet Philosopher">,
+    "trust": <integer 1-9>,
+    "trustType": <2-word archetype label like "Faithful Guardian" or "Cautious Grower">
+  },
+  "greeting": "<Warm one-line greeting using their name: ${name}>",
+  "remark": "<3-4 warm, insightful, positive sentences about their overall emotional world based on the reflections. Be specific to what they wrote. Celebrate their inner depth. Keep it human and poetic.>"
+}
+
+Scoring guide:
+1-3 = still discovering / guarded / early stage
+4-6 = growing / aware / evolving
+7-9 = deep / open / mature expression
+Base the scores on the depth, openness, and emotional richness of what they wrote.`
+        }]
+      })
+    });
+
+    const data = await resp.json();
+    const raw = data.content.map(b => b.text || '').join('').replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(raw);
+    const { scores, greeting, remark } = parsed;
+
+    // Show result
+    document.getElementById('resultGreeting').textContent = greeting;
+    document.getElementById('loveScore').textContent = scores.love;
+    document.getElementById('lifeScore').textContent = scores.life;
+    document.getElementById('trustScore').textContent = scores.trust;
+    document.getElementById('loveType').textContent = scores.loveType;
+    document.getElementById('lifeType').textContent = scores.lifeType;
+    document.getElementById('trustType').textContent = scores.trustType;
+    document.getElementById('remarkText').textContent = remark;
+    const rc = document.getElementById('resultCard');
+    rc.classList.add('show');
+    setTimeout(() => {
+      document.getElementById('loveBar').style.width = (scores.love/9*100)+'%';
+      document.getElementById('lifeBar').style.width = (scores.life/9*100)+'%';
+      document.getElementById('trustBar').style.width = (scores.trust/9*100)+'%';
+    }, 100);
+    rc.scrollIntoView({behavior:'smooth',block:'center'});
+
+    // Save to public feed
+    const entries = await loadFeed();
+    entries.push({ name, scores, remark, ts: Date.now() });
+    if (entries.length > 50) entries.splice(0, entries.length - 50);
+    await saveFeed(entries);
+    renderFeed(entries);
+
+  } catch (err) {
+    alert('Something went wrong. Please try again.');
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btnText.textContent = '✨ Reveal My Scores';
+  }
+}
+</script>
+</body>
+</html>
